@@ -4,147 +4,318 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kronos Enterprise Analytics Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-deep: #080b14;
+            --surface: rgba(17, 24, 39, 0.72);
+            --surface-card: rgba(15, 23, 42, 0.85);
+            --border-subtle: rgba(148, 163, 184, 0.12);
+            --border-active: rgba(99, 102, 241, 0.5);
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --accent-cyan: #06b6d4;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --danger-bg: rgba(239, 68, 68, 0.08);
+            --danger-border: rgba(239, 68, 68, 0.28);
+            --danger-text: #fca5a5;
+            --danger-title: #f87171;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0a0e27 0%, #1a1f4e 50%, #0d1234 100%);
-            color: #c4c9e2;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+            padding: 24px;
         }
-        .container {
-            background: rgba(15, 20, 50, 0.9);
-            border: 1px solid rgba(100, 120, 200, 0.2);
-            border-radius: 12px;
-            padding: 48px;
-            max-width: 480px;
-            width: 90%;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+
+        /* Ambient Glow & Grid background */
+        .ambient-bg {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 20% 25%, rgba(99, 102, 241, 0.14) 0%, transparent 45%),
+                radial-gradient(circle at 80% 75%, rgba(6, 182, 212, 0.12) 0%, transparent 40%);
+            z-index: 0;
         }
-        .logo {
-            text-align: center;
-            margin-bottom: 32px;
+
+        .grid-pattern {
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 36px 36px;
+            pointer-events: none;
+            z-index: 1;
         }
-        .logo h1 {
-            font-size: 28px;
-            color: #7b8cff;
-            font-weight: 300;
-            letter-spacing: 4px;
+
+        .login-card {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 440px;
+            background: var(--surface-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 40px 36px 32px 36px;
+            box-shadow: 
+                0 0 0 1px rgba(255, 255, 255, 0.03),
+                0 25px 60px -15px rgba(0, 0, 0, 0.7);
+        }
+
+        .header {
+            text-align: left;
+            margin-bottom: 28px;
+        }
+
+        .brand-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .brand-badge {
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
             text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.08);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            padding: 3px 10px;
+            border-radius: 9999px;
+            font-weight: 500;
         }
-        .logo .subtitle {
-            font-size: 12px;
-            color: #5a6380;
-            margin-top: 8px;
-            letter-spacing: 2px;
+
+        .security-status {
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted);
+            letter-spacing: 0.04em;
         }
+
+        .brand-name {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .portal-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
         .form-group {
             margin-bottom: 20px;
         }
+
         .form-group label {
             display: block;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #6b7394;
-            margin-bottom: 8px;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 12px 16px;
-            background: rgba(10, 14, 39, 0.8);
-            border: 1px solid rgba(100, 120, 200, 0.15);
-            border-radius: 6px;
-            color: #c4c9e2;
-            font-size: 14px;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-        .form-group input:focus {
-            border-color: rgba(123, 140, 255, 0.5);
-        }
-        .btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #4a5ae8, #7b8cff);
-            border: none;
-            border-radius: 6px;
-            color: white;
-            font-size: 14px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: opacity 0.3s;
-        }
-        .btn:hover { opacity: 0.9; }
-        .error-box {
-            display: none;
-            background: rgba(220, 50, 50, 0.1);
-            border: 1px solid rgba(220, 50, 50, 0.3);
-            border-radius: 6px;
-            padding: 16px;
-            margin-top: 20px;
-            text-align: center;
-        }
-        .error-box .error-icon {
-            font-size: 24px;
-            margin-bottom: 8px;
-        }
-        .error-box .error-title {
-            color: #e05555;
-            font-weight: 600;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .error-box .error-msg {
-            color: #a05050;
             font-size: 12px;
-            margin-top: 6px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            color: #cbd5e1;
+            margin-bottom: 8px;
         }
-        .footer {
-            text-align: center;
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            background: rgba(11, 15, 25, 0.75);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 13px 16px;
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--text-main);
+            outline: none;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .input-wrapper input::placeholder {
+            color: #475569;
+        }
+
+        .input-wrapper input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            background: rgba(15, 23, 42, 0.95);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 13px 20px;
+            margin-top: 8px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            letter-spacing: 0.01em;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+            filter: brightness(1.05);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .error-alert {
+            display: none;
             margin-top: 24px;
-            font-size: 10px;
-            color: #3a3f5c;
+            padding: 16px;
+            background: var(--danger-bg);
+            border: 1px solid var(--danger-border);
+            border-radius: 10px;
+            text-align: left;
+            animation: fadeIn 0.25s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-4px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .error-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .error-title {
+            color: var(--danger-title);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+        }
+
+        .error-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--danger-text);
+            background: rgba(239, 68, 68, 0.15);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .error-body {
+            color: var(--danger-text);
+            font-size: 12.5px;
+            line-height: 1.5;
+        }
+
+        .footer-note {
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-subtle);
+            text-align: center;
+            font-size: 11px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .footer-note span {
+            color: #94a3b8;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="logo">
-            <h1>&#x23F0; Kronos</h1>
-            <div class="subtitle">Enterprise Analytics Portal v4.2.1</div>
+    <div class="ambient-bg"></div>
+    <div class="grid-pattern"></div>
+
+    <div class="login-card">
+        <div class="header">
+            <div class="brand-meta">
+                <span class="brand-badge">Internal Fleet</span>
+                <span class="security-status">TLS 1.3 &bull; Node: us-east-3</span>
+            </div>
+            <h1 class="brand-name">Kronos Analytics</h1>
+            <p class="portal-desc">Enterprise Telemetry &amp; OLAP Core v4.2.1</p>
         </div>
+
         <form id="loginForm">
             <div class="form-group">
-                <label>Corporate Email</label>
-                <input type="email" id="email" placeholder="user@kronos.internal" required>
+                <label for="email">Corporate Identity (UPN / Email)</label>
+                <div class="input-wrapper">
+                    <input type="email" id="email" placeholder="operator@kronos.internal" autocomplete="username" required>
+                </div>
             </div>
+
             <div class="form-group">
-                <label>Password</label>
-                <input type="password" id="password" placeholder="Enter your password" required>
+                <label for="password">Password / SSO Token</label>
+                <div class="input-wrapper">
+                    <input type="password" id="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" autocomplete="current-password" required>
+                </div>
             </div>
-            <button type="submit" class="btn">Sign In</button>
+
+            <button type="submit" class="btn-submit">Authenticate Session</button>
         </form>
-        <div class="error-box" id="errorBox">
-            <div class="error-icon">&#x1F6E1;</div>
-            <div class="error-title">Access Denied</div>
-            <div class="error-msg">Corporate VPN Subnet Required.<br>Connect to kronos-vpn.internal before accessing this portal.</div>
+
+        <div class="error-alert" id="errorBox">
+            <div class="error-header">
+                <span class="error-title">Access Denied</span>
+                <span class="error-code">ERR_VPN_SUBNET_REQUIRED</span>
+            </div>
+            <div class="error-body">
+                Corporate VPN Subnet Required.<br>
+                Connection to <strong>kronos-vpn.internal</strong> is mandatory for remote gateway authorization.
+            </div>
         </div>
-        <div class="footer">
-            &copy; 2023 Kronos Analytics Division &mdash; Internal Use Only<br>
-            Authorized personnel on corporate network only.
+
+        <div class="footer-note">
+            &copy; 2023 Kronos Analytics Division &mdash; Restricted System<br>
+            <span>Telemetry access logged and monitored under Policy SEC-902.</span>
         </div>
     </div>
+
     <script>
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            document.getElementById('errorBox').style.display = 'block';
+            const errorBox = document.getElementById('errorBox');
+            errorBox.style.display = 'block';
         });
     </script>
 </body>
