@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kronos Enterprise Analytics Portal</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f4e 50%, #0d1234 100%);
+            color: #c4c9e2;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background: rgba(15, 20, 50, 0.9);
+            border: 1px solid rgba(100, 120, 200, 0.2);
+            border-radius: 12px;
+            padding: 48px;
+            max-width: 480px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .logo h1 {
+            font-size: 28px;
+            color: #7b8cff;
+            font-weight: 300;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+        .logo .subtitle {
+            font-size: 12px;
+            color: #5a6380;
+            margin-top: 8px;
+            letter-spacing: 2px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #6b7394;
+            margin-bottom: 8px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(10, 14, 39, 0.8);
+            border: 1px solid rgba(100, 120, 200, 0.15);
+            border-radius: 6px;
+            color: #c4c9e2;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus {
+            border-color: rgba(123, 140, 255, 0.5);
+        }
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #4a5ae8, #7b8cff);
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        .btn:hover { opacity: 0.9; }
+        .error-box {
+            display: none;
+            background: rgba(220, 50, 50, 0.1);
+            border: 1px solid rgba(220, 50, 50, 0.3);
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .error-box .error-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        .error-box .error-title {
+            color: #e05555;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .error-box .error-msg {
+            color: #a05050;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 10px;
+            color: #3a3f5c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <h1>&#x23F0; Kronos</h1>
+            <div class="subtitle">Enterprise Analytics Portal v4.2.1</div>
+        </div>
+        <form id="loginForm">
+            <div class="form-group">
+                <label>Corporate Email</label>
+                <input type="email" id="email" placeholder="user@kronos.internal" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+            </div>
+            <button type="submit" class="btn">Sign In</button>
+        </form>
+        <div class="error-box" id="errorBox">
+            <div class="error-icon">&#x1F6E1;</div>
+            <div class="error-title">Access Denied</div>
+            <div class="error-msg">Corporate VPN Subnet Required.<br>Connect to kronos-vpn.internal before accessing this portal.</div>
+        </div>
+        <div class="footer">
+            &copy; 2023 Kronos Analytics Division &mdash; Internal Use Only<br>
+            Authorized personnel on corporate network only.
+        </div>
+    </div>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('errorBox').style.display = 'block';
+        });
+    </script>
+</body>
+</html>

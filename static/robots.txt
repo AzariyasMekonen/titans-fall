@@ -1,0 +1,14 @@
+# Kronos Analytics Platform - robots.txt
+# Last updated: 2023-03-15
+#
+# NOTE: Remember to remove the old config backup before Q2 launch
+# TODO: Delete /backup/superset_config_2023.bak (contains old JWT validation params)
+# Ticket: SEC-2847 - Cleanup archived configs from public web root
+#
+
+User-agent: *
+Disallow: /api/
+Disallow: /v1/
+Disallow: /v2/
+Disallow: /backup/
+Disallow: /internal/

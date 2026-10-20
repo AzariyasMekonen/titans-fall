@@ -1,0 +1,158 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Kronos Analytics Engine API",
+    "description": "Internal API for Kronos Enterprise Analytics Platform. All endpoints require Bearer JWT authentication with valid organizational claims.",
+    "version": "4.2.1",
+    "contact": {
+      "name": "Kronos Platform Engineering",
+      "email": "platform-eng@kronos.internal"
+    }
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/v1/GetConfig": {
+      "get": {
+        "summary": "Get Service Configuration",
+        "description": "Returns the current service configuration. Requires Admin role.",
+        "tags": ["Configuration"],
+        "security": [{"BearerAuth": []}],
+        "responses": {
+          "200": {
+            "description": "Service configuration object"
+          },
+          "401": {
+            "description": "Invalid or missing JWT"
+          },
+          "403": {
+            "description": "Insufficient permissions"
+          }
+        }
+      }
+    },
+    "/v1/GetTables": {
+      "get": {
+        "summary": "List Available Tables",
+        "description": "Lists all tables available for the specified routing target.",
+        "tags": ["Data"],
+        "security": [{"BearerAuth": []}],
+        "parameters": [
+          {
+            "name": "routingTarget",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The data source routing target identifier."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of table names"
+          },
+          "401": {
+            "description": "Invalid or missing JWT"
+          },
+          "404": {
+            "description": "Unknown routing target"
+          }
+        }
+      }
+    },
+    "/v2/Query": {
+      "post": {
+        "summary": "Execute Raw Query",
+        "description": "Executes a raw SQL query against the specified routing target. Requires Admin role.",
+        "tags": ["Data"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["routingTarget", "query"],
+                "properties": {
+                  "routingTarget": {
+                    "type": "string",
+                    "description": "The data source routing target identifier."
+                  },
+                  "query": {
+                    "type": "string",
+                    "description": "Raw SQL query string to execute."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Query results"
+          },
+          "401": {
+            "description": "Invalid or missing JWT"
+          },
+          "403": {
+            "description": "Insufficient permissions or non-SELECT query"
+          },
+          "404": {
+            "description": "Unknown routing target"
+          }
+        }
+      }
+    },
+    "/v1/Insert": {
+      "post": {
+        "summary": "Insert Data Record",
+        "description": "Inserts a data record into the specified routing target. Currently disabled in production.",
+        "tags": ["Data"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "routingTarget": {
+                    "type": "string"
+                  },
+                  "record": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "503": {
+            "description": "Service temporarily unavailable"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "JWT with required claims: tid (Tenant ID), aud (Audience), appid (Application ID), upn (User Principal Name)"
+      }
+    }
+  }
+}

@@ -1,0 +1,49 @@
+#=============================================================================
+# Kronos Analytics Engine - Service Configuration Backup
+# Archived: 2023-01-20 by ops-admin@kronos.internal
+# Original: /etc/kronos/service_config.yaml
+# WARNING: This file contains sensitive configuration. Delete after migration.
+#=============================================================================
+
+[identity_provider]
+# Azure AD / OAuth2 Configuration for Kronos Tenant
+tenant_id = 9a8b7c6d-5e4f-3a2b-1c0d-e9f8a7b6c5d4
+audience = https://analytics.kronos.internal/api
+application_id = c3f2e1d0-b9a8-7654-3210-fedcba987654
+issuer = https://login.kronos.internal/9a8b7c6d-5e4f-3a2b-1c0d-e9f8a7b6c5d4/v2.0
+
+# JWT Validation Settings
+# NOTE: sig_verification was disabled during the Dec 2022 migration
+# and was never re-enabled. See incident INC-9921.
+# jwt_signing_key = <REDACTED - rotated quarterly>
+jwt_algorithms = RS256, none
+jwt_validate_claims = tid, aud, appid, upn
+jwt_sig_verify = false
+
+[routing]
+# Data source routing targets
+# Active targets connect to live Presto/Trino clusters
+# Decommissioned targets return empty result sets
+active_targets = TestData, CoreAnalytics, TelemetryRaw, UserMetrics, SessionLogs, EventStream, AuditTrail, PerformanceKPI, RevenueData, MarketingFunnel, SupportTickets, InventoryDB, LogArchive_2021, LogArchive_2022, LogArchive_2023, ComplianceAudit, HRAnalytics, FinanceReporting, InfraMonitor, SecurityEvents, NetworkFlow, CustomerSegment, ProductTelemetry, A_BTesting, MLPipeline_Staging, MLPipeline_Prod, DataLake_Raw, DataLake_Curated, DataLake_Serving, CacheLayer
+
+decommissioned_targets = Legacy_DW_2019, Legacy_DW_2020, OldCRM, DeprecatedBI, Sandbox_QA, Sandbox_Dev, MigrationTemp, Archive_Deleted, TestHarness_Old, Demo_Environment, POC_Analytics, TempExport_Jan, TempExport_Feb, TempExport_Mar, DecommNode_A, DecommNode_B, DecommNode_C, RetiredCluster_1, RetiredCluster_2, RetiredCluster_3, ObsoleteETL, DeprecatedStream, EndOfLife_Pipe, Sunset_Dashboard, Archived_Metrics, Removed_Service
+
+[database]
+engine = sqlite
+path = /app/data/kronos.db
+read_only_mode = true
+max_query_rows = 10000
+query_timeout_ms = 30000
+
+[rbac]
+# Local user mapping (fallback when AD sync is unavailable)
+# UPN format: plain username maps to local ID
+# Email format (user@domain) requires directory sync
+local_admin_upn = admin
+local_analyst_upn = analyst
+local_readonly_upn = readonly
+
+[audit]
+log_all_queries = true
+log_path = /var/log/kronos/audit.log
+retention_days = 90

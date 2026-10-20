@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kronos API Documentation</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0d1117;
+            color: #c9d1d9;
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 { color: #58a6ff; border-bottom: 1px solid #21262d; padding-bottom: 16px; }
+        h2 { color: #7ee787; margin-top: 32px; }
+        .endpoint {
+            background: #161b22;
+            border: 1px solid #21262d;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        .method { color: #f0883e; font-weight: bold; }
+        .path { color: #58a6ff; }
+        .desc { color: #8b949e; font-size: 14px; margin-top: 8px; }
+        .auth-note {
+            background: rgba(187, 128, 9, 0.1);
+            border: 1px solid rgba(187, 128, 9, 0.4);
+            border-radius: 6px;
+            padding: 12px;
+            margin: 16px 0;
+            font-size: 13px;
+            color: #d29922;
+        }
+    </style>
+</head>
+<body>
+    <h1>Kronos Analytics Engine - API Reference</h1>
+    <p>Version 4.2.1 | Internal Use Only</p>
+
+    <div class="auth-note">
+        &#x26A0; All endpoints require Bearer JWT authentication with valid organizational claims (tid, aud, appid, upn).
+        See <a href="/swagger.json" style="color:#58a6ff">/swagger.json</a> for the full OpenAPI specification.
+    </div>
+
+    <h2>Endpoints</h2>
+
+    <div class="endpoint">
+        <span class="method">GET</span> <span class="path">/v1/GetConfig</span>
+        <div class="desc">Returns the current service configuration. Requires Admin role.</div>
+    </div>
+
+    <div class="endpoint">
+        <span class="method">GET</span> <span class="path">/v1/GetTables?routingTarget={target}</span>
+        <div class="desc">Lists all tables available for the specified routing target.</div>
+    </div>
+
+    <div class="endpoint">
+        <span class="method">POST</span> <span class="path">/v2/Query</span>
+        <div class="desc">Executes a raw SQL query against the specified routing target. Requires Admin role. Body: {"routingTarget": "...", "query": "..."}</div>
+    </div>
+
+    <div class="endpoint">
+        <span class="method">POST</span> <span class="path">/v1/Insert</span>
+        <div class="desc">Insert data record. Currently disabled in production (HTTP 503).</div>
+    </div>
+
+    <h2>Authentication</h2>
+    <p>Obtain a valid JWT from your organization's identity provider. The token must include the following claims:</p>
+    <ul>
+        <li><strong>tid</strong> - Tenant ID</li>
+        <li><strong>aud</strong> - Audience (this service's identifier)</li>
+        <li><strong>appid</strong> - Registered Application ID</li>
+        <li><strong>upn</strong> - User Principal Name</li>
+    </ul>
+</body>
+</html>
