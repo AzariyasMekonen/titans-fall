@@ -7,7 +7,7 @@ from flask import Flask, request, jsonify, send_from_directory, send_file
 app = Flask(__name__, static_folder='static')
 
 DATABASE = os.environ.get('DATABASE_PATH', '/app/data/kronos.db')
-FLAG = os.environ.get('CHALLENGE_FLAG') or os.environ.get('FLAG') or 'ADWA{kr0n0s_4lg_n0ne_bypass_m4st3r}'
+FLAG = os.environ.get('CHALLENGE_FLAG') or os.environ.get('FLAG') or 'AdwaCTF{kr0n0s_4lg_n0ne_bypass_m4st3r}'
 
 # Leaked config values (intentionally vulnerable)
 VALID_TID = "9a8b7c6d-5e4f-3a2b-1c0d-e9f8a7b6c5d4"

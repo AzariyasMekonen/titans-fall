@@ -3,7 +3,7 @@ import os
 import sys
 
 DATABASE = os.environ.get('DATABASE_PATH', '/app/data/kronos.db')
-FLAG = os.environ.get('CHALLENGE_FLAG') or os.environ.get('FLAG') or 'ADWA{kr0n0s_4lg_n0ne_bypass_m4st3r}'
+FLAG = os.environ.get('CHALLENGE_FLAG') or os.environ.get('FLAG') or 'AdwaCTF{kr0n0s_4lg_n0ne_bypass_m4st3r}'
 
 def init_database():
     """Initialize the SQLite database with dummy analytics data and the hidden flag."""
