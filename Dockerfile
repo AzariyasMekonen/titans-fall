@@ -16,7 +16,8 @@ RUN mkdir -p /app/data
 
 # Environment variables
 ENV DATABASE_PATH=/app/data/kronos.db
-ENV FLAG=AdwaCTF{kr0n0s_4lg_n0ne_bypass_m4st3r}
+ENV CHALLENGE_FLAG=ADWA{kr0n0s_4lg_n0ne_bypass_m4st3r}
+ENV FLAG=ADWA{kr0n0s_4lg_n0ne_bypass_m4st3r}
 ENV PORT=5000
 
 # Copy entrypoint

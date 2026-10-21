@@ -3,7 +3,7 @@ import os
 import sys
 
 DATABASE = os.environ.get('DATABASE_PATH', '/app/data/kronos.db')
-FLAG = os.environ.get('FLAG', 'AdwaCTF{kr0n0s_4lg_n0ne_bypass_m4st3r}')
+FLAG = os.environ.get('CHALLENGE_FLAG') or os.environ.get('FLAG') or 'ADWA{kr0n0s_4lg_n0ne_bypass_m4st3r}'
 
 def init_database():
     """Initialize the SQLite database with dummy analytics data and the hidden flag."""
@@ -135,7 +135,8 @@ def init_database():
     ]
     cursor.executemany('INSERT INTO system_config (key, value, updated_at) VALUES (?, ?, ?)', config_data)
 
-    # ==================== INSERT THE FLAG ====================
+    # ==================== INSERT / UPDATE THE FLAG ====================
+    cursor.execute('DELETE FROM flag_vault WHERE flag_name = ?', ('KRONOS_PRIMARY',))
     cursor.execute('''
         INSERT INTO flag_vault (flag_name, flag_value, classification, inserted_at)
         VALUES (?, ?, ?, ?)
